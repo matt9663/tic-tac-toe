@@ -28,6 +28,10 @@ export default class Board extends Component {
       winner: null,
       draw: false,
     })
+    let winners = document.querySelectorAll(".winner");
+    if (winners.length) {
+      winners.forEach(winner => winner.classList.remove('winner'))
+    }
   }
 
   setSquare(index) {
@@ -40,12 +44,18 @@ export default class Board extends Component {
     if (this.checkWinner(this.state.squares)) {
       this.setState({
         winner: turn,
-      })
+      });
+      this.checkWinner(this.state.squares).forEach(square => this.toggleWinningSquare(square));
     } else {
       this.checkDraw(this.state.squares)
       this.toggleTurn();
     }
   }
+  toggleWinningSquare(id) {
+    let square = document.querySelector(`#square-${id}`);
+    square.classList.add('winner');
+  }
+
   checkWinner(squares) {
     const lines = [
       [0,1,2],
@@ -69,14 +79,15 @@ export default class Board extends Component {
             oWins: this.state.oWins + 1
           })
         }
-        return true;
+        return [a,b,c];
       } 
     }
   }
   checkDraw(squares) {
     if (squares.indexOf(null) === -1 && this.state.winner === null) {
       this.setState({
-        draw: true
+        draw: true,
+        winner: 'none'
       })
     }  
   }
@@ -90,22 +101,22 @@ export default class Board extends Component {
           <span className='score'>X: {this.state.xWins} O: {this.state.oWins}</span>
         </header>
         <h2 className='turn-order'>Current Player: {this.state.turn}</h2>
-        {this.state.winner && <h1>{this.state.winner} is the winner!</h1>}
+        {this.state.winner && this.state.winner !== 'none' && <h1>{this.state.winner} is the winner!</h1>}
         {this.state.draw && <h1>It's a draw!</h1>}
         <div className='board-row'>
-          <Square value={this.state.squares[0]} onClick={() => this.setSquare(0)} winner={this.state.winner} />
-          <Square value={this.state.squares[1]} onClick={() => this.setSquare(1)} winner={this.state.winner} />
-          <Square value={this.state.squares[2]} onClick={() => this.setSquare(2)} winner={this.state.winner} />
+          <Square value={this.state.squares[0]} onClick={() => this.setSquare(0)} winner={this.state.winner} id='square-0'/>
+          <Square value={this.state.squares[1]} onClick={() => this.setSquare(1)} winner={this.state.winner} id='square-1'/>
+          <Square value={this.state.squares[2]} onClick={() => this.setSquare(2)} winner={this.state.winner} id='square-2'/>
         </div>
         <div className='board-row'>
-          <Square value={this.state.squares[3]} onClick={() => this.setSquare(3)} winner={this.state.winner} />
-          <Square value={this.state.squares[4]} onClick={() => this.setSquare(4)} winner={this.state.winner} />
-          <Square value={this.state.squares[5]} onClick={() => this.setSquare(5)} winner={this.state.winner} />
+          <Square value={this.state.squares[3]} onClick={() => this.setSquare(3)} winner={this.state.winner} id='square-3'/>
+          <Square value={this.state.squares[4]} onClick={() => this.setSquare(4)} winner={this.state.winner} id='square-4'/>
+          <Square value={this.state.squares[5]} onClick={() => this.setSquare(5)} winner={this.state.winner} id='square-5'/>
         </div>
         <div className='board-row'>
-          <Square value={this.state.squares[6]} onClick={() => this.setSquare(6)} winner={this.state.winner} />
-          <Square value={this.state.squares[7]} onClick={() => this.setSquare(7)} winner={this.state.winner} />
-          <Square value={this.state.squares[8]} onClick={() => this.setSquare(8)} winner={this.state.winner} />
+          <Square value={this.state.squares[6]} onClick={() => this.setSquare(6)} winner={this.state.winner} id='square-6'/>
+          <Square value={this.state.squares[7]} onClick={() => this.setSquare(7)} winner={this.state.winner} id='square-7'/>
+          <Square value={this.state.squares[8]} onClick={() => this.setSquare(8)} winner={this.state.winner} id='square-8'/>
         </div>
         <button className='reset-board' onClick={() => this.resetGame()}>Reset The Board</button>
       </div>

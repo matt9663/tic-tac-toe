@@ -24,3 +24,8 @@
 .title {
   grid-column-start: 2;
 }
+
+.winner {
+  background-color: limegreen;
+  color: white;
+}
